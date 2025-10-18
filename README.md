@@ -116,6 +116,7 @@ Special handling for:
 
 > Designed for **"points-only" output** to enable easy integrations.
 
----
+---<img width="1901" height="929" alt="image" src="https://github.com/user-attachments/assets/3c4c4a72-5034-4f0c-a418-c51515731d43" />
+
 
 
