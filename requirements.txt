@@ -1,0 +1,31 @@
+# Core Dependencies
+selenium==4.15.2
+requests==2.31.0
+beautifulsoup4==4.12.2
+
+# LangChain and LangGraph
+langchain==0.1.0
+langchain-core==0.1.10
+langchain-groq==0.0.1
+langgraph==0.0.20
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# HTML Parsing
+lxml==4.9.3
+
+# Database (usually comes with Python but just in case)
+# sqlite3 is included in Python standard library
+
+# Optional but recommended
+urllib3==2.1.0
+certifi==2023.11.17
+
+# Web Driver Manager (optional - for automatic Chrome driver management)
+webdriver-manager==4.0.1
+selenium
+langchain
+langgraph
+groq
+python-dotenv
