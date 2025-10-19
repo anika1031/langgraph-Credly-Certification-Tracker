@@ -1,122 +1,84 @@
-#  Credly Certification Tracker – LangGraph + Groq API
+# Langgraph Cert Credit-point agent
 
-Track your AWS (or other) certifications from Credly, compute points based on certification level, and interact using LLM-powered tools via LangGraph.
+# Goal 
+To provide an automated way to track, validate, and assign points to professional certifications — from **Credly URLs** .
 
----
+# User Interaction 
+How Users Interact with the Agent
 
-##  Features
+## Step 1:Submit a Query
+Users can ask following types of questions:
 
--  **LLM Agent with LangGraph + Groq (LLaMA 3 70B)**
--  **Tool calling support** for scraping, parsing, querying, and calculating
--  **Selenium-based Credly badge parser**
--  **SQLite database** to store and manage badge info
--  **Points system** to compute certification value
--  CLI interface (terminal-based) for local usage
+Query Type 1: Check Credit Points for a Specific Badge (Expired)
 
----
+User: "How many credit points can I get for https://www.credly.com/badges/e192db17-f8c5-46aa-8f99-8a565223f1d6?"
 
-###  LLM Agent with LangGraph + Groq (LLaMA 3 70B)
+Agent Response: "Sorry, your cert has expired. So you won't get any credit points. 
+But otherwise you would have stood to obtain 5 credit points for your Hashicorp Terraform Cert"
 
-This project integrates [LangGraph](https://docs.langchain.com/langgraph/) — a state-machine framework for LLMs — with [LangChain](https://www.langchain.com/) and the [Groq API](https://groq.com/), using **Meta’s LLaMA 3 70B Versatile** model.
+Query Type 2: Check Credit Points for a Valid Badge
 
-- Enables fast, structured, and dynamic agent behavior
-- Supports tool chaining and control flow
-- Empowers the agent to reason, plan, and execute tools based on your prompts
+User: "What about https://www.credly.com/badges/90ee2ee9-f6cf-4d9b-8a52-f631d8644d58?"
 
-> Groq provides ultra-fast inference with token speeds exceeding 500 tokens/sec.
+Agent Response: "I see that this is an AWS AI Practitioner cert. And it is still valid. 
+So you can be granted 2.5 credit points for it."
 
----
+## Step 2: View Results
+The agent provides:-
 
-###  Tool Calling Support (Dynamic Function Execution)
+Credit Points: Numerical value based on certification tier
 
-The agent can **autonomously invoke Python tools** based on your query, thanks to LangChain’s `@tool` decorators.
+Certification Name: Extracted from the badge or query
 
-Available tools include:
+Validity Status: Whether the certification is currently valid
 
--  `parse_badge_from_url`: Parse a single badge from its Credly URL
--  `scrape_credly_profile`: Scrape all badges from a user's public Credly profile
--  `get_my_certifications`: View all certifications and their points
--  `calculate_certification_points`: Estimate how many points a new certification will earn
--  `get_total_points`: Get your current total valid certification points
--  `show_points_table`: Show the entire points system for reference
+Reasoning: Clear explanation of the decision
 
-> The agent understands which tool to call without explicit instructions — just ask naturally.
 
----
 
-###  Selenium-Based Credly Badge Parser
 
-No API? No problem. This project uses **Selenium with ChromeDriver** to extract badge data from Credly pages.
 
-- Works with both individual badge URLs and full profiles
-- Parses badge title, cert holder name, issue/expiry dates, and status
-- Scrolls to load all badges dynamically on profile pages
-- Bypasses bot detection with custom headers and stealth options
+## Features
 
-> Supports real-time scraping from public profiles and badges.
+- Extracts certification data from Credly URLs
 
----
+- Validates certification expiry dates
 
-###  SQLite Database to Store and Manage Badge Info
+- Calculates credit points based on certification tier
 
-Data is stored persistently using **SQLite**, including:
+- Handles both URL queries and hypothetical questions
 
--  Badge name
--  Certification category (e.g., Associate, Specialty)
--  Issue & Expiry Dates
--  Status (Valid / Expired)
--  Points per certification
+- Powered by Groq's  model
 
-Additionally, a separate table maps certification names to categories, improving classification accuracy.
+## Setup
 
-> All parsed or scraped data is cached locally to avoid re-parsing.
+### Prerequisites
+- Python 3.8+
+- Groq API Key
 
----
+## Usage
 
-###  Points System for Certification Levels
+### With LangGraph Studio
+```bash
+langgraph dev
+```
 
-Certifications are scored based on their **category**, following this table:
+### Programmatically
+```python
+from credly_updated import run_agent
 
-| Category     | Points |
-|--------------|--------|
-| Foundational | 10     |
-| Associate    | 5      |
-| Professional | 10     |
-| Specialty    | 10     |
-| Other/Unknown| 2.5    |
+response = run_agent("How many credit points can I get for https://www.credly.com/badges/...")
+print(response)
+```
 
-Used to:
 
-- Quantify your certification progress
-- Predict point increase from upcoming exams
-- Motivate team members or gamify internal skill tracking
-
-> You can modify point values by editing the `POINTS` dictionary in the code.
-
----
-
-###  Command-Line Interface (CLI) for Local Use
-
-Run the tool locally in your terminal:
-
-- Type prompts like:
-  - `"How many points do I have?"`
-  - `"If I get AWS Developer Associate?"`
-  - `"https://www.credly.com/badges/..."`
-- Responses are **numerical** — perfect for:
-  - Scripts
-  - Integrations
-  - Terminal automation
-
-Special handling for:
-
-- Total point queries
-- Badge parsing from URL
-- Certification point predictions
-
-> Designed for **"points-only" output** to enable easy integrations.
-
+## Query & Traces (Reference Screenshots)
 ---<img width="1901" height="929" alt="image" src="https://github.com/user-attachments/assets/3c4c4a72-5034-4f0c-a418-c51515731d43" />
 
+## Credit Point System
 
-
+| Certification Type | Points |
+|-------------------|--------|
+| Professional or Specialty | 10 |
+| Associate or Hashicorp | 5 |
+| Anything Else | 2.5 |
